@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Struna Tuner</string>
+    <string name="app_subtitle">Офлайн-тюнер для гитары и бас-гитары</string>
+</resources>
