@@ -57,7 +57,10 @@ android_verify:
         echo "GitHub ref mismatch: expected $STRUNA_GITHUB_SHA, got $ACTUAL_SHA" >&2
         exit 3
       fi
-      printf '%s\n' "$ACTUAL_SHA" | tee "$CI_PROJECT_DIR/github-source-sha.txt"
+      mkdir -p "$CI_PROJECT_DIR/phase0-metrics"
+      printf '%s\n' "$ACTUAL_SHA" | tee "$CI_PROJECT_DIR/github-source-sha.txt" "$CI_PROJECT_DIR/phase0-metrics/github-source-sha.txt"
+      printf '%s\n' "$STRUNA_GITHUB_REPOSITORY" > "$CI_PROJECT_DIR/phase0-metrics/github-source-repository.txt"
+      printf '%s\n' "$STRUNA_GITHUB_REF" > "$CI_PROJECT_DIR/phase0-metrics/github-source-ref.txt"
     - mkdir -p "$ANDROID_HOME/cmdline-tools"
     - |
       if [ ! -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
@@ -75,7 +78,6 @@ android_verify:
     - cd "$STRUNA_SOURCE_DIR" && ./gradlew --version
   script:
     - cd "$STRUNA_SOURCE_DIR" && ./gradlew --no-daemon --stacktrace clean lintDebug testDebugUnitTest assembleDebug assembleRelease bundleRelease
-    - mkdir -p "$CI_PROJECT_DIR/phase0-metrics"
     - cd "$STRUNA_SOURCE_DIR" && ./gradlew --no-daemon :app:dependencies --configuration releaseRuntimeClasspath > "$CI_PROJECT_DIR/phase0-metrics/release-runtime-classpath.txt"
     - |
       for artifact in \
