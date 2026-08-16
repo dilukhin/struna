@@ -1,9 +1,17 @@
 stages:
   - verify
 
-image: eclipse-temurin:17-jdk-jammy
-
-timeout: 45m
+default:
+  image: eclipse-temurin:17-jdk-jammy
+  cache:
+    key: "struna-android-v2"
+    paths:
+      - .gradle/caches/
+      - .gradle/wrapper/
+      - .android-sdk/cmdline-tools/
+      - .android-sdk/platforms/android-36/
+      - .android-sdk/build-tools/36.0.0/
+      - .android-sdk/licenses/
 
 variables:
   GIT_STRATEGY: "empty"
@@ -21,18 +29,9 @@ variables:
   ANDROID_COMMAND_LINE_TOOLS_URL: "https://dl.google.com/android/repository/commandlinetools-linux-15859902_latest.zip"
   ANDROID_COMMAND_LINE_TOOLS_SHA256: "4e4c464f145a7512b57d088ac6c278c03c9eea610886b35a5e0804e74eedf583"
 
-cache:
-  key: "struna-android-v2"
-  paths:
-    - .gradle/caches/
-    - .gradle/wrapper/
-    - .android-sdk/cmdline-tools/
-    - .android-sdk/platforms/android-36/
-    - .android-sdk/build-tools/36.0.0/
-    - .android-sdk/licenses/
-
 android_verify:
   stage: verify
+  timeout: 45m
   before_script:
     - apt-get update -qq
     - apt-get install -y --no-install-recommends git curl unzip
