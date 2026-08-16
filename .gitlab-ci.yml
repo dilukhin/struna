@@ -69,7 +69,7 @@ android_verify:
         unzip -q /tmp/android-command-line-tools.zip -d /tmp
         mv /tmp/cmdline-tools "$ANDROID_HOME/cmdline-tools/latest"
       fi
-    - yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null
+    - bash -c 'set +o pipefail; yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null'
     - "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
     - chmod +x "$STRUNA_SOURCE_DIR/gradlew"
     - cd "$STRUNA_SOURCE_DIR" && ./gradlew --version
