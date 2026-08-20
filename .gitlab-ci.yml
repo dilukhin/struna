@@ -1,0 +1,103 @@
+stages:
+  - verify
+
+default:
+  image: eclipse-temurin:17-jdk-jammy
+  cache:
+    key: "struna-android-v2"
+    paths:
+      - .gradle/caches/
+      - .gradle/wrapper/
+      - .android-sdk/cmdline-tools/
+      - .android-sdk/platforms/android-36/
+      - .android-sdk/build-tools/36.0.0/
+      - .android-sdk/licenses/
+
+variables:
+  GIT_STRATEGY: "empty"
+  STRUNA_GITHUB_REPOSITORY: "https://github.com/dilukhin/struna.git"
+  STRUNA_GITHUB_REF:
+    value: ""
+    description: "GitHub branch or ref to verify, for example phase0/bootstrap-skeleton"
+  STRUNA_GITHUB_SHA:
+    value: ""
+    description: "Expected full 40-character GitHub commit SHA"
+  STRUNA_SOURCE_DIR: "$CI_PROJECT_DIR/struna-source"
+  ANDROID_HOME: "$CI_PROJECT_DIR/.android-sdk"
+  ANDROID_SDK_ROOT: "$CI_PROJECT_DIR/.android-sdk"
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
+  ANDROID_COMMAND_LINE_TOOLS_URL: "https://dl.google.com/android/repository/commandlinetools-linux-15859902_latest.zip"
+  ANDROID_COMMAND_LINE_TOOLS_SHA256: "4e4c464f145a7512b57d088ac6c278c03c9eea610886b35a5e0804e74eedf583"
+
+android_verify:
+  stage: verify
+  timeout: 45m
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends git curl unzip
+    - |
+      if [ -z "$STRUNA_GITHUB_REF" ] || [ -z "$STRUNA_GITHUB_SHA" ]; then
+        echo "STRUNA_GITHUB_REF and STRUNA_GITHUB_SHA are required." >&2
+        exit 2
+      fi
+      case "$STRUNA_GITHUB_SHA" in
+        *[!0-9a-fA-F]*) echo "STRUNA_GITHUB_SHA must be hexadecimal." >&2; exit 2 ;;
+      esac
+      if [ "${#STRUNA_GITHUB_SHA}" -ne 40 ]; then
+        echo "STRUNA_GITHUB_SHA must contain exactly 40 hexadecimal characters." >&2
+        exit 2
+      fi
+    - git init "$STRUNA_SOURCE_DIR"
+    - git -C "$STRUNA_SOURCE_DIR" remote add origin "$STRUNA_GITHUB_REPOSITORY"
+    - git -C "$STRUNA_SOURCE_DIR" fetch --depth 1 origin "$STRUNA_GITHUB_REF"
+    - git -C "$STRUNA_SOURCE_DIR" checkout --detach FETCH_HEAD
+    - |
+      ACTUAL_SHA="$(git -C "$STRUNA_SOURCE_DIR" rev-parse HEAD)"
+      if [ "$ACTUAL_SHA" != "$STRUNA_GITHUB_SHA" ]; then
+        echo "GitHub ref mismatch: expected $STRUNA_GITHUB_SHA, got $ACTUAL_SHA" >&2
+        exit 3
+      fi
+      mkdir -p "$CI_PROJECT_DIR/phase0-metrics"
+      printf '%s\n' "$ACTUAL_SHA" | tee "$CI_PROJECT_DIR/github-source-sha.txt" "$CI_PROJECT_DIR/phase0-metrics/github-source-sha.txt"
+      printf '%s\n' "$STRUNA_GITHUB_REPOSITORY" > "$CI_PROJECT_DIR/phase0-metrics/github-source-repository.txt"
+      printf '%s\n' "$STRUNA_GITHUB_REF" > "$CI_PROJECT_DIR/phase0-metrics/github-source-ref.txt"
+    - mkdir -p "$ANDROID_HOME/cmdline-tools"
+    - |
+      if [ ! -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+        curl --fail --location --silent --show-error \
+          "$ANDROID_COMMAND_LINE_TOOLS_URL" \
+          --output /tmp/android-command-line-tools.zip
+        echo "$ANDROID_COMMAND_LINE_TOOLS_SHA256  /tmp/android-command-line-tools.zip" | sha256sum --check -
+        rm -rf "$ANDROID_HOME/cmdline-tools/latest" /tmp/cmdline-tools
+        unzip -q /tmp/android-command-line-tools.zip -d /tmp
+        mv /tmp/cmdline-tools "$ANDROID_HOME/cmdline-tools/latest"
+      fi
+    - bash -c 'set +o pipefail; yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null'
+    - "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+    - chmod +x "$STRUNA_SOURCE_DIR/gradlew"
+    - cd "$STRUNA_SOURCE_DIR" && ./gradlew --version
+  script:
+    - cd "$STRUNA_SOURCE_DIR" && ./gradlew --no-daemon --stacktrace clean lintDebug testDebugUnitTest assembleDebug assembleRelease bundleRelease
+    - cd "$STRUNA_SOURCE_DIR" && ./gradlew --no-daemon :app:dependencies --configuration releaseRuntimeClasspath > "$CI_PROJECT_DIR/phase0-metrics/release-runtime-classpath.txt"
+    - |
+      for artifact in \
+        "$STRUNA_SOURCE_DIR"/app/build/outputs/apk/release/*.apk \
+        "$STRUNA_SOURCE_DIR"/app/build/outputs/bundle/release/*.aab; do
+        printf '%s\t%s bytes\n' "${artifact#"$STRUNA_SOURCE_DIR"/}" "$(stat -c %s "$artifact")"
+      done | tee "$CI_PROJECT_DIR/phase0-metrics/artifact-sizes.txt"
+    - |
+      sha256sum \
+        "$STRUNA_SOURCE_DIR"/app/build/outputs/apk/release/*.apk \
+        "$STRUNA_SOURCE_DIR"/app/build/outputs/bundle/release/*.aab \
+        | sed "s#$STRUNA_SOURCE_DIR/##" \
+        | tee "$CI_PROJECT_DIR/phase0-metrics/artifact-sha256.txt"
+    - "$ANDROID_HOME/cmdline-tools/latest/bin/apkanalyzer" manifest permissions "$STRUNA_SOURCE_DIR/app/build/outputs/apk/release/app-release-unsigned.apk" | tee "$CI_PROJECT_DIR/phase0-metrics/permissions.txt"
+  artifacts:
+    when: always
+    expire_in: 30 days
+    paths:
+      - github-source-sha.txt
+      - struna-source/app/build/reports/
+      - struna-source/app/build/outputs/apk/release/*.apk
+      - struna-source/app/build/outputs/bundle/release/*.aab
+      - phase0-metrics/
