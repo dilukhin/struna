@@ -2,4 +2,25 @@
 <resources>
     <string name="app_name">Struna Tuner</string>
     <string name="app_subtitle">Offline guitar &amp; bass tuner</string>
+    <string name="tuner_title">Struna Tuner</string>
+    <string name="status_offline">Offline</string>
+    <string name="menu_open_navigation">Open navigation</string>
+    <string name="instrument_guitar">Guitar</string>
+    <string name="instrument_bass">Bass</string>
+    <string name="tuning_standard">Standard tuning</string>
+    <string name="strings_title">Strings</string>
+    <string name="stability_title">Stability</string>
+    <string name="signal_high">High</string>
+    <string name="signal_low">Low</string>
+    <string name="signal_none">No signal</string>
+    <string name="state_waiting">Waiting for signal</string>
+    <string name="state_flat">Tune up</string>
+    <string name="state_in_tune">In tune</string>
+    <string name="state_sharp">Tune down</string>
+    <string name="state_unstable">Unstable signal</string>
+    <string name="state_microphone_permission_required">Microphone access required</string>
+    <string name="frequency_format">%1$.1f Hz</string>
+    <string name="cents_format">%1$+.0f cents</string>
+    <string name="cents_zero">0 cents</string>
+    <string name="footer_offline">Works offline · Guitar and bass</string>
 </resources>

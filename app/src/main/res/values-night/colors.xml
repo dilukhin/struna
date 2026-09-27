@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="struna_color_background">@color/struna_primitive_color_dark_bg</color>
+    <color name="struna_color_surface">@color/struna_primitive_color_dark_surface</color>
+    <color name="struna_color_text_primary">@color/struna_primitive_color_dark_text</color>
+    <color name="struna_color_text_secondary">@color/struna_primitive_color_dark_muted</color>
+    <color name="struna_color_accent">@color/struna_primitive_color_lime</color>
+    <color name="struna_color_accent_soft">@color/struna_primitive_color_dark_green_soft</color>
+    <color name="struna_color_border">@color/struna_primitive_color_border_dark</color>
+    <color name="struna_color_low">@color/struna_primitive_color_orange</color>
+    <color name="struna_color_high">@color/struna_primitive_color_red</color>
+</resources>
