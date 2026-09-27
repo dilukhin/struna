@@ -68,7 +68,11 @@ jobs:
           "$SDKMANAGER" "platforms;android-36" "build-tools;36.0.0"
 
       - name: Show Gradle version
-        run: ./gradlew --version
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew
+          ./gradlew --version
 
       - name: Build, lint and test
         run: ./gradlew --no-daemon --stacktrace clean lintDebug testDebugUnitTest assembleDebug assembleRelease bundleRelease
