@@ -17,7 +17,7 @@
     <string name="stability_title">Stability</string>
     <string name="signal_high">High</string>
     <string name="signal_low">Low</string>
-    <string name="signal_none">No signal</string>
+    <string name="note_placeholder">—</string>\n    <string name="signal_none">No signal</string>
     <string name="listening">Listening…</string>
     <string name="play_string">Play a string</string>
     <string name="state_waiting">Waiting for signal</string>

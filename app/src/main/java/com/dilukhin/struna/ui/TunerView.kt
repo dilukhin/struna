@@ -110,14 +110,8 @@ class TunerView @JvmOverloads constructor(
         orientation = HORIZONTAL
         gravity = Gravity.CENTER_VERTICAL
 
-        val menu = TextView(context).apply {
-            includeFontPadding = false
-            gravity = Gravity.CENTER
-            useRegularTypeface()
-            setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 24f)
-            setTextColor(context.getColor(R.color.struna_color_text_primary))
-            text = "☰"
-            contentDescription = context.getString(R.string.menu_open_navigation)
+        val menu = IconButtonView(context).apply {
+            setSymbol("☰", R.string.menu_open_navigation)
         }
         addView(menu, LayoutParams(context.dp(48f), context.dp(48f)).apply {
             marginEnd = context.dp(10f)
@@ -196,6 +190,9 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
     private val status = TextView(context)
 
     init {
+        clipChildren = false
+        clipToPadding = false
+
         note.apply {
             includeFontPadding = false
             gravity = Gravity.CENTER
@@ -238,7 +235,7 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
 
     fun render(state: TunerUiState) {
         if (state.displayState == TuningDisplayState.WAITING) {
-            note.text = "—"
+            note.setText(R.string.note_placeholder)
             frequency.setText(R.string.listening)
             cents.setText(R.string.play_string)
             status.setText(R.string.state_waiting)
@@ -247,11 +244,11 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
             return
         }
 
-        note.text = state.note ?: "—"
+        note.text = state.note ?: context.getString(R.string.note_placeholder)
         frequency.text = state.frequencyHz?.let {
             context.getString(R.string.frequency_format, it)
-        } ?: "—"
-        cents.text = state.cents?.let(::formatCents) ?: "—"
+        } ?: context.getString(R.string.note_placeholder)
+        cents.text = state.cents?.let(::formatCents) ?: context.getString(R.string.note_placeholder)
 
         val statusRes = when (state.displayState) {
             TuningDisplayState.FLAT -> R.string.state_flat

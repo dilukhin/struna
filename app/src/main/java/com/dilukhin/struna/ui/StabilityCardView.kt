@@ -38,7 +38,7 @@ class StabilityCardView @JvmOverloads constructor(
         }
         val title = TextView(context).apply {
             configureSingleLineText(
-                R.dimen.struna_text_cents,
+                R.dimen.struna_text_stability_title,
                 R.color.struna_color_text_primary,
                 medium = true,
             )

@@ -28,6 +28,7 @@
     <dimen name="struna_text_title">22sp</dimen>
     <dimen name="struna_text_note">58sp</dimen>
     <dimen name="struna_text_body">16sp</dimen>
+    <dimen name="struna_text_stability_title">15sp</dimen>
     <dimen name="struna_text_cents">14sp</dimen>
     <dimen name="struna_text_caption">12sp</dimen>
     <dimen name="struna_text_scale">11sp</dimen>

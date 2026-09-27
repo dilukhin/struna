@@ -21,12 +21,11 @@ jobs:
     timeout-minutes: 45
 
     env:
-      GRADLE_USER_HOME: ${{ github.workspace }}/.gradle
       PHASE0_METRICS_DIR: ${{ github.workspace }}/phase0-metrics
 
     steps:
       - name: Checkout exact source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
@@ -47,7 +46,7 @@ jobs:
           printf '%s\n' "${{ github.ref }}" > "$PHASE0_METRICS_DIR/github-source-ref.txt"
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '17'
@@ -112,7 +111,7 @@ jobs:
 
       - name: Upload verification artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: android-verify-${{ github.run_id }}
           if-no-files-found: warn
