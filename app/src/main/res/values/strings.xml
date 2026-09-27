@@ -19,9 +19,9 @@
     <string name="signal_low">Low</string>
     <string name="note_placeholder">—</string>
     <string name="signal_none">No signal</string>
-    <string name="listening">Listening…</string>
-    <string name="play_string">Play a string</string>
-    <string name="state_waiting">Waiting for signal</string>
+    <string name="listening">No measurement</string>
+    <string name="play_string">Microphone not active</string>
+    <string name="state_waiting">Waiting</string>
     <string name="state_flat">Tune up</string>
     <string name="state_in_tune">In tune</string>
     <string name="state_sharp">Tune down</string>
@@ -31,7 +31,7 @@
     <string name="cents_value_format">%1$s cents</string>
     <string name="cents_zero">0 cents</string>
     <string name="footer_offline">Works offline · Guitar and bass</string>
-    <string name="footer_waiting">Play an open string</string>
+    <string name="footer_waiting">Preview · Audio input not connected</string>
     <string name="footer_bass">Works offline · 4-string bass</string>
     <string name="microphone_permission_title">Microphone access needed</string>
     <string name="microphone_permission_body">Struna listens to your instrument through the microphone. Audio is processed locally on the device and does not require the internet.</string>

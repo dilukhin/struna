@@ -19,9 +19,9 @@
     <string name="signal_low">Низкая</string>
     <string name="note_placeholder">—</string>
     <string name="signal_none">Нет сигнала</string>
-    <string name="listening">Слушаю…</string>
-    <string name="play_string">Сыграйте струну</string>
-    <string name="state_waiting">Ожидание сигнала</string>
+    <string name="listening">Нет измерения</string>
+    <string name="play_string">Микрофон не подключён</string>
+    <string name="state_waiting">Ожидание</string>
     <string name="state_flat">Низко</string>
     <string name="state_in_tune">В строю</string>
     <string name="state_sharp">Высоко</string>
@@ -31,7 +31,7 @@
     <string name="cents_value_format">%1$s центов</string>
     <string name="cents_zero">0 центов</string>
     <string name="footer_offline">Работает офлайн · Гитара и бас</string>
-    <string name="footer_waiting">Сыграйте открытую струну</string>
+    <string name="footer_waiting">Предпросмотр · Звуковой вход не подключён</string>
     <string name="footer_bass">Работает офлайн · Бас 4 струны</string>
     <string name="microphone_permission_title">Нужен доступ к микрофону</string>
     <string name="microphone_permission_body">Struna слушает инструмент через микрофон. Аудио обрабатывается локально на устройстве и не требует интернета.</string>
