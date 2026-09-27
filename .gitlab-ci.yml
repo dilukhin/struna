@@ -16,12 +16,8 @@ default:
 variables:
   GIT_STRATEGY: "empty"
   STRUNA_GITHUB_REPOSITORY: "https://github.com/dilukhin/struna.git"
-  STRUNA_GITHUB_REF:
-    value: ""
-    description: "GitHub branch or ref to verify, for example phase0/bootstrap-skeleton"
-  STRUNA_GITHUB_SHA:
-    value: ""
-    description: "Expected full 40-character GitHub commit SHA"
+  STRUNA_GITHUB_REF: ""
+  STRUNA_GITHUB_SHA: ""
   STRUNA_SOURCE_DIR: "$CI_PROJECT_DIR/struna-source"
   ANDROID_HOME: "$CI_PROJECT_DIR/.android-sdk"
   ANDROID_SDK_ROOT: "$CI_PROJECT_DIR/.android-sdk"
