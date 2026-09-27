@@ -17,7 +17,8 @@
     <string name="stability_title">Стабильность</string>
     <string name="signal_high">Высокая</string>
     <string name="signal_low">Низкая</string>
-    <string name="note_placeholder">—</string>\n    <string name="signal_none">Нет сигнала</string>
+    <string name="note_placeholder">—</string>
+    <string name="signal_none">Нет сигнала</string>
     <string name="listening">Слушаю…</string>
     <string name="play_string">Сыграйте струну</string>
     <string name="state_waiting">Ожидание сигнала</string>

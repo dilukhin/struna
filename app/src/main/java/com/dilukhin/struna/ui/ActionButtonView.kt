@@ -22,8 +22,6 @@ class ActionButtonView @JvmOverloads constructor(
         setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15f)
         minHeight = context.dp(48f)
         setPadding(context.dp(18f), context.dp(12f), context.dp(18f), context.dp(12f))
-        isFocusable = true
-        isClickable = true
     }
 
     fun configure(labelRes: Int, style: ActionButtonStyle) {

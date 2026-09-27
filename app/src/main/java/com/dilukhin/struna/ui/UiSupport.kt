@@ -7,7 +7,6 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import kotlin.math.roundToInt
 
@@ -56,10 +55,6 @@ internal fun Context.roundedBackground(
     if (strokeColorRes != null) {
         setStroke(dp(strokeWidthDp).coerceAtLeast(1), getColor(strokeColorRes))
     }
-}
-
-internal fun View.setFixedSize(widthDp: Float, heightDp: Float) {
-    layoutParams = LinearLayout.LayoutParams(context.dp(widthDp), context.dp(heightDp))
 }
 
 internal fun ViewGroup.addGap(heightDp: Float) {
