@@ -192,6 +192,7 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
     init {
         clipChildren = false
         clipToPadding = false
+        background = context.roundedBackground(R.color.struna_color_surface, 24f)
 
         note.apply {
             includeFontPadding = false
