@@ -18,6 +18,7 @@ Struna is a small, privacy-conscious offline tuner for Android 9+ focused first 
 ## Initial scope
 
 - Android 9+ (`minSdk 28`).
+- Android application ID and namespace: `com.dilukhin.struna`.
 - Guitar 6 Standard: E2 A2 D3 G3 B3 E4.
 - Bass 4 Standard: E1 A1 D2 G2.
 - Target note/string and cents deviation.
