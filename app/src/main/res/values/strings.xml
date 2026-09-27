@@ -7,12 +7,19 @@
     <string name="menu_open_navigation">Open navigation</string>
     <string name="instrument_guitar">Guitar</string>
     <string name="instrument_bass">Bass</string>
+    <string name="selector_guitar">Guitar 6 std.</string>
+    <string name="selector_bass">Bass 4 std.</string>
+    <string name="tuning_guitar_notes">E A D G B E</string>
+    <string name="tuning_bass_notes">E A D G</string>
     <string name="tuning_standard">Standard tuning</string>
+    <string name="tuning_standard_bass">Standard bass</string>
     <string name="strings_title">Strings</string>
     <string name="stability_title">Stability</string>
     <string name="signal_high">High</string>
     <string name="signal_low">Low</string>
     <string name="signal_none">No signal</string>
+    <string name="listening">Listening…</string>
+    <string name="play_string">Play a string</string>
     <string name="state_waiting">Waiting for signal</string>
     <string name="state_flat">Tune up</string>
     <string name="state_in_tune">In tune</string>
@@ -20,7 +27,13 @@
     <string name="state_unstable">Unstable signal</string>
     <string name="state_microphone_permission_required">Microphone access required</string>
     <string name="frequency_format">%1$.1f Hz</string>
-    <string name="cents_format">%1$+.0f cents</string>
+    <string name="cents_value_format">%1$s cents</string>
     <string name="cents_zero">0 cents</string>
     <string name="footer_offline">Works offline · Guitar and bass</string>
+    <string name="footer_waiting">Play an open string</string>
+    <string name="footer_bass">Works offline · 4-string bass</string>
+    <string name="microphone_permission_title">Microphone access needed</string>
+    <string name="microphone_permission_body">Struna listens to your instrument through the microphone. Audio is processed locally on the device and does not require the internet.</string>
+    <string name="action_allow_microphone">Allow access</string>
+    <string name="action_open_settings">Open settings</string>
 </resources>
