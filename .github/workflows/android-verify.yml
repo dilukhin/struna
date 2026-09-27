@@ -57,8 +57,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          yes | sdkmanager --licenses >/dev/null
-          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$SDKMANAGER" ]; then
+            echo "sdkmanager not found at $SDKMANAGER" >&2
+            exit 4
+          fi
+          set +o pipefail
+          yes | "$SDKMANAGER" --licenses >/dev/null
+          set -o pipefail
+          "$SDKMANAGER" "platforms;android-36" "build-tools;36.0.0"
 
       - name: Show Gradle version
         run: ./gradlew --version
@@ -91,7 +98,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          APKANALYZER="$(command -v apkanalyzer)"
+          APKANALYZER="$ANDROID_HOME/cmdline-tools/latest/bin/apkanalyzer"
+          if [ ! -x "$APKANALYZER" ]; then
+            echo "apkanalyzer not found at $APKANALYZER" >&2
+            exit 5
+          fi
           "$APKANALYZER" manifest permissions app/build/outputs/apk/release/app-release-unsigned.apk \
             | tee "$PHASE0_METRICS_DIR/permissions.txt"
 
