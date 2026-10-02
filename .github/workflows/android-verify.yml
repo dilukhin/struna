@@ -119,6 +119,7 @@ jobs:
           path: |
             github-source-sha.txt
             app/build/reports/
+            app/build/outputs/apk/debug/*.apk
             app/build/outputs/apk/release/*.apk
             app/build/outputs/bundle/release/*.aab
             phase0-metrics/
