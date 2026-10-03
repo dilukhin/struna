@@ -3,7 +3,6 @@ package com.dilukhin.struna.ui
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -44,7 +43,7 @@ class TunerView @JvmOverloads constructor(
         normalBody.orientation = VERTICAL
         normalBody.addView(createInstrumentSwitch(), LayoutParams(LayoutParams.MATCH_PARENT, context.dp(50f)))
         normalBody.addGap(10f)
-        normalBody.addView(tunerPanel, LayoutParams(LayoutParams.MATCH_PARENT, context.dp(215f)))
+        normalBody.addView(tunerPanel, LayoutParams(LayoutParams.MATCH_PARENT, context.dp(240f)))
         normalBody.addGap(10f)
         normalBody.addView(stabilityCard, LayoutParams(LayoutParams.MATCH_PARENT, context.dp(84f)))
         normalBody.addGap(10f)
@@ -62,7 +61,7 @@ class TunerView @JvmOverloads constructor(
         addView(normalBody, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
 
         permissionCard.visibility = GONE
-        addView(permissionCard, LayoutParams(LayoutParams.MATCH_PARENT, context.dp(380f)))
+        addView(permissionCard, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
 
         guitarSelector.setOnClickListener {
             render(TunerUiFixtures.waiting(Instrument.GUITAR))
@@ -129,12 +128,6 @@ class TunerView @JvmOverloads constructor(
             marginEnd = context.dp(10f)
         })
 
-        addView(View(context), LayoutParams(context.dp(22f), 1).apply {
-            marginEnd = context.dp(10f)
-        })
-
-        val status = StatusChipView(context)
-        addView(status, LayoutParams(LayoutParams.WRAP_CONTENT, context.dp(30f)))
     }
 
     private fun createInstrumentSwitch(): LinearLayout = LinearLayout(context).apply {
@@ -208,7 +201,7 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
             R.color.struna_color_text_secondary,
             gravityValue = Gravity.CENTER,
         )
-        addView(frequency, centeredLayout(120f, 22f, 68f))
+        addView(frequency, centeredTextLayout(22f, 68f))
 
         cents.configureSingleLineText(
             R.dimen.struna_text_cents,
@@ -216,7 +209,7 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
             medium = true,
             gravityValue = Gravity.CENTER,
         )
-        addView(cents, centeredLayout(140f, 20f, 95f))
+        addView(cents, centeredTextLayout(26f, 95f))
 
         addView(gauge, LayoutParams(LayoutParams.MATCH_PARENT, context.dp(73f)).apply {
             gravity = Gravity.TOP
@@ -231,7 +224,7 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
             medium = true,
             gravityValue = Gravity.CENTER,
         )
-        addView(status, centeredLayout(180f, 22f, 198f))
+        addView(status, centeredTextLayout(26f, 198f))
     }
 
     fun render(state: TunerUiState) {
@@ -291,6 +284,14 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
     private fun centeredLayout(widthDp: Float, heightDp: Float, topDp: Float) =
         LayoutParams(context.dp(widthDp), context.dp(heightDp)).apply {
             gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+            topMargin = context.dp(topDp)
+        }
+
+    private fun centeredTextLayout(heightDp: Float, topDp: Float) =
+        LayoutParams(LayoutParams.MATCH_PARENT, context.dp(heightDp)).apply {
+            gravity = Gravity.TOP
+            leftMargin = context.dp(16f)
+            rightMargin = context.dp(16f)
             topMargin = context.dp(topDp)
         }
 }

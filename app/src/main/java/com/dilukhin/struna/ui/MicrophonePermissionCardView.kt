@@ -35,9 +35,10 @@ class MicrophonePermissionCardView @JvmOverloads constructor(
                 medium = true,
                 gravityValue = Gravity.CENTER,
             )
+            maxLines = 2
             setText(R.string.microphone_permission_title)
         }
-        addView(title, LayoutParams(LayoutParams.MATCH_PARENT, context.dp(32f)).apply {
+        addView(title, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
             topMargin = context.dp(16f)
         })
 
@@ -48,9 +49,9 @@ class MicrophonePermissionCardView @JvmOverloads constructor(
             setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15f)
             setTextColor(context.getColor(R.color.struna_color_text_secondary))
             setText(R.string.microphone_permission_body)
-            maxLines = 4
+            maxLines = 6
         }
-        addView(body, LayoutParams(LayoutParams.MATCH_PARENT, context.dp(72f)).apply {
+        addView(body, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
             topMargin = context.dp(16f)
         })
 
