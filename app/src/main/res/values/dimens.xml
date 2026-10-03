@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="struna_space_4">4dp</dimen>
+    <dimen name="struna_space_8">8dp</dimen>
+    <dimen name="struna_space_10">10dp</dimen>
+    <dimen name="struna_space_12">12dp</dimen>
+    <dimen name="struna_space_14">14dp</dimen>
+    <dimen name="struna_space_16">16dp</dimen>
+    <dimen name="struna_space_18">18dp</dimen>
+    <dimen name="struna_space_20">20dp</dimen>
+    <dimen name="struna_space_24">24dp</dimen>
+    <dimen name="struna_space_32">32dp</dimen>
+
+    <dimen name="struna_radius_12">12dp</dimen>
+    <dimen name="struna_radius_14">14dp</dimen>
+    <dimen name="struna_radius_16">16dp</dimen>
+    <dimen name="struna_radius_20">20dp</dimen>
+    <dimen name="struna_radius_28">28dp</dimen>
+
+    <dimen name="struna_size_touch_min">48dp</dimen>
+    <dimen name="struna_content_inset">20dp</dimen>
+    <dimen name="struna_top_bar_height">48dp</dimen>
+    <dimen name="struna_instrument_selector_height">50dp</dimen>
+    <dimen name="struna_tuner_panel_height">215dp</dimen>
+    <dimen name="struna_stability_card_height">84dp</dimen>
+    <dimen name="struna_string_row_height">48dp</dimen>
+
+    <dimen name="struna_text_title">22sp</dimen>
+    <dimen name="struna_text_note">58sp</dimen>
+    <dimen name="struna_text_body">16sp</dimen>
+    <dimen name="struna_text_stability_title">15sp</dimen>
+    <dimen name="struna_text_cents">14sp</dimen>
+    <dimen name="struna_text_caption">12sp</dimen>
+    <dimen name="struna_text_scale">11sp</dimen>
+    <dimen name="struna_text_string_note">20sp</dimen>
+    <dimen name="struna_text_string_number">13sp</dimen>
+    <dimen name="struna_text_string_frequency">14sp</dimen>
+</resources>
