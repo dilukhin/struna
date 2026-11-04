@@ -9,6 +9,7 @@ enum class TuningDisplayState {
     SHARP,
     UNSTABLE,
     MICROPHONE_PERMISSION_REQUIRED,
+    AUDIO_ERROR,
 }
 
 enum class SignalQuality {
@@ -25,13 +26,15 @@ data class TunerUiState(
     val displayState: TuningDisplayState,
     val signalQuality: SignalQuality,
     val activeStringNumber: Int? = null,
+    val audioActive: Boolean = false,
 )
 
 object TunerUiFixtures {
-    fun waiting(instrument: Instrument = Instrument.GUITAR) = TunerUiState(
+    fun waiting(instrument: Instrument = Instrument.GUITAR, audioActive: Boolean = false) = TunerUiState(
         instrument = instrument,
         displayState = TuningDisplayState.WAITING,
         signalQuality = SignalQuality.NONE,
+        audioActive = audioActive,
     )
 
     val flat = TunerUiState(

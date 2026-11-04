@@ -26,6 +26,9 @@ class TunerView @JvmOverloads constructor(
     private val footer = TextView(context)
     private val permissionCard = MicrophonePermissionCardView(context)
     private var currentState = TunerUiFixtures.waiting()
+    var onInstrumentSelected: ((Instrument) -> Unit)? = null
+    var onAllowMicrophone: (() -> Unit)? = null
+    var onOpenSettings: (() -> Unit)? = null
 
     init {
         orientation = VERTICAL
@@ -64,12 +67,14 @@ class TunerView @JvmOverloads constructor(
         addView(permissionCard, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
 
         guitarSelector.setOnClickListener {
-            render(TunerUiFixtures.waiting(Instrument.GUITAR))
+            onInstrumentSelected?.invoke(Instrument.GUITAR) ?: render(TunerUiFixtures.waiting(Instrument.GUITAR))
         }
         bassSelector.setOnClickListener {
-            render(TunerUiFixtures.waiting(Instrument.BASS))
+            onInstrumentSelected?.invoke(Instrument.BASS) ?: render(TunerUiFixtures.waiting(Instrument.BASS))
         }
 
+        permissionCard.allowButton.setOnClickListener { onAllowMicrophone?.invoke() }
+        permissionCard.settingsButton.setOnClickListener { onOpenSettings?.invoke() }
         render(currentState)
     }
 
@@ -98,7 +103,8 @@ class TunerView @JvmOverloads constructor(
 
         footer.setText(
             when {
-                state.displayState == TuningDisplayState.WAITING -> R.string.footer_waiting
+                state.displayState == TuningDisplayState.AUDIO_ERROR -> R.string.footer_audio_error
+                state.displayState == TuningDisplayState.WAITING && !state.audioActive -> R.string.footer_waiting
                 state.instrument == Instrument.BASS -> R.string.footer_bass
                 else -> R.string.footer_offline
             },
@@ -228,11 +234,11 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
     }
 
     fun render(state: TunerUiState) {
-        if (state.displayState == TuningDisplayState.WAITING) {
+        if (state.displayState == TuningDisplayState.WAITING || state.displayState == TuningDisplayState.AUDIO_ERROR) {
             note.setText(R.string.note_placeholder)
-            frequency.setText(R.string.listening)
-            cents.setText(R.string.play_string)
-            status.setText(R.string.state_waiting)
+            frequency.setText(if (state.displayState == TuningDisplayState.AUDIO_ERROR) R.string.microphone_unavailable else if (state.audioActive) R.string.listening_active else R.string.listening)
+            cents.setText(if (state.audioActive) R.string.play_string_active else R.string.play_string)
+            status.setText(if (state.displayState == TuningDisplayState.AUDIO_ERROR) R.string.state_audio_error else R.string.state_waiting)
             status.setTextColor(context.getColor(R.color.struna_color_text_secondary))
             gauge.setReading(null, state.displayState)
             return
@@ -251,6 +257,7 @@ private class TunerPanelView(context: Context) : FrameLayout(context) {
             TuningDisplayState.UNSTABLE ->
                 if ((state.cents ?: 0.0) <= 0.0) R.string.state_flat else R.string.state_sharp
             TuningDisplayState.WAITING -> R.string.state_waiting
+            TuningDisplayState.AUDIO_ERROR -> R.string.state_audio_error
             TuningDisplayState.MICROPHONE_PERMISSION_REQUIRED ->
                 R.string.state_microphone_permission_required
         }
