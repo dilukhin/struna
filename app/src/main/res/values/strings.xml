@@ -37,4 +37,9 @@
     <string name="microphone_permission_body">Struna listens to your instrument through the microphone. Audio is processed locally on the device and does not require the internet.</string>
     <string name="action_allow_microphone">Allow access</string>
     <string name="action_open_settings">Open settings</string>
+    <string name="listening_active">Listening</string>
+    <string name="play_string_active">Pluck a string</string>
+    <string name="microphone_unavailable">Microphone unavailable</string>
+    <string name="state_audio_error">Audio input failed</string>
+    <string name="footer_audio_error">Check microphone access and restart</string>
 </resources>

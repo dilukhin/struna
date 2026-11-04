@@ -37,4 +37,9 @@
     <string name="microphone_permission_body">Struna слушает инструмент через микрофон. Аудио обрабатывается локально на устройстве и не требует интернета.</string>
     <string name="action_allow_microphone">Разрешить доступ</string>
     <string name="action_open_settings">Открыть настройки</string>
+    <string name="listening_active">Слушаю</string>
+    <string name="play_string_active">Дёрните струну</string>
+    <string name="microphone_unavailable">Микрофон недоступен</string>
+    <string name="state_audio_error">Ошибка звукового входа</string>
+    <string name="footer_audio_error">Проверьте доступ к микрофону и перезапустите приложение</string>
 </resources>
