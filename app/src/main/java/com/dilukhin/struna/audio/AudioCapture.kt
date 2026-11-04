@@ -38,16 +38,18 @@ class AudioCapture(
     private fun runCapture() {
         var local: AudioRecord? = null
         try {
-            val rate = 22050
+            // 44.1 kHz is the portable Android input rate. Decimate to keep YIN inexpensive.
+            val captureRate = 44100
+            val analysisRate = captureRate / 2
             val windowSize = 4096
-            val hopSize = 2048
+            val hopSize = 4096
             val minimum = AudioRecord.getMinBufferSize(
-                rate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
+                captureRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
             )
             if (minimum <= 0) throw IllegalStateException("Unsupported audio format")
             local = AudioRecord(
                 MediaRecorder.AudioSource.MIC,
-                rate,
+                captureRate,
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT,
                 maxOf(minimum, windowSize * 2),
@@ -60,27 +62,32 @@ class AudioCapture(
             val window = ShortArray(windowSize)
             val input = ShortArray(hopSize)
             var filled = 0
+            var pendingSample: Int? = null
             val detector = PitchDetector()
             while (active) {
                 val count = local.read(input, 0, input.size, AudioRecord.READ_BLOCKING)
                 if (!active) break
                 if (count < 0) throw IllegalStateException("AudioRecord read failed: $count")
                 if (count == 0) continue
-                if (filled < windowSize) {
-                    val copied = minOf(count, windowSize - filled)
-                    input.copyInto(window, filled, 0, copied)
-                    filled += copied
-                    if (filled < windowSize) continue
-                } else {
-                    window.copyInto(window, 0, count, windowSize)
-                    input.copyInto(window, windowSize - count, 0, count)
+                for (index in 0 until count) {
+                    val first = pendingSample
+                    if (first == null) {
+                        pendingSample = input[index].toInt()
+                        continue
+                    }
+                    pendingSample = null
+                    window[filled++] = ((first + input[index].toInt()) / 2).toShort()
+                    if (filled == windowSize) {
+                        val result = detector.detect(window, analysisRate)
+                        if (active) onPitch(result)
+                        window.copyInto(window, 0, windowSize / 2, windowSize)
+                        filled = windowSize / 2
+                    }
                 }
-                val result = detector.detect(window, rate)
-                if (active) onPitch(result)
             }
         } catch (_: SecurityException) {
             if (active) onError()
-        } catch (_: IllegalStateException) {
+        } catch (_: RuntimeException) {
             if (active) onError()
         } finally {
             if (recorder === local) recorder = null

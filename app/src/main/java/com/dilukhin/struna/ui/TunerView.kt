@@ -26,6 +26,8 @@ class TunerView @JvmOverloads constructor(
     private val footer = TextView(context)
     private val permissionCard = MicrophonePermissionCardView(context)
     private var currentState = TunerUiFixtures.waiting()
+    private var lastRowsInstrument: Instrument? = null
+    private var lastActiveStringNumber: Int? = null
     var onInstrumentSelected: ((Instrument) -> Unit)? = null
     var onAllowMicrophone: (() -> Unit)? = null
     var onOpenSettings: (() -> Unit)? = null
@@ -99,7 +101,11 @@ class TunerView @JvmOverloads constructor(
             },
         )
 
-        rebuildStringRows(state)
+        if (lastRowsInstrument != state.instrument || lastActiveStringNumber != state.activeStringNumber) {
+            rebuildStringRows(state)
+            lastRowsInstrument = state.instrument
+            lastActiveStringNumber = state.activeStringNumber
+        }
 
         footer.setText(
             when {
